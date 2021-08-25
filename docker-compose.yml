@@ -1,0 +1,58 @@
+version: '2.3'
+
+services:
+  btcd:
+    network_mode: host
+    build:
+      context: btcd
+    volumes:
+      - '~/.btcd/:/root/.btcd/'
+    environment:
+      RPCUSER: kek
+      RPCPASS: kek
+      #MINING_ADDRESS: rg3P7ejGFZkMc6ty19rQs2USBndBy3RcrP # alice
+      MINING_ADDRESS: rjFjTRWSmtv9VKJaSpUgm88VXTd7Qzgg8Z # bob
+      #BTCDARGS: --dropcfindex
+  lnd_alice:
+    network_mode: host
+    build:
+      context: lnd
+    volumes:
+      - '~/.btcd/:/root/.btcd/'
+      - '~/.lnd/tls.cert:/etc/lnd/tls.cert'
+      - '~/.lnd/tls.key:/etc/lnd/tls.key'
+    environment:
+      RPCLISTEN: localhost:10001
+      LISTEN: localhost:10011
+      RESTLISTEN: localhost:8001
+      TLSCERT: /etc/lnd/tls.cert
+      TLSKEY: /etc/lnd/tls.key
+  lnd_bob:
+    network_mode: host
+    build:
+      context: lnd
+    volumes:
+      - '~/.btcd/:/root/.btcd/'
+      - '~/.lnd/tls.cert:/etc/lnd/tls.cert'
+      - '~/.lnd/tls.key:/etc/lnd/tls.key'
+    environment:
+      RPCLISTEN: localhost:10002
+      LISTEN: localhost:10012
+      RESTLISTEN: localhost:8002
+      TLSCERT: /etc/lnd/tls.cert
+      TLSKEY: /etc/lnd/tls.key
+  lnd_charlie:
+    network_mode: host
+    build:
+      context: lnd
+    volumes:
+      - '~/.btcd/:/root/.btcd/'
+      - '~/.lnd/tls.cert:/etc/lnd/tls.cert'
+      - '~/.lnd/tls.key:/etc/lnd/tls.key'
+    environment:
+      RPCLISTEN: localhost:10003
+      LISTEN: localhost:10013
+      RESTLISTEN: localhost:8003
+      TLSCERT: /etc/lnd/tls.cert
+      TLSKEY: /etc/lnd/tls.key
+
